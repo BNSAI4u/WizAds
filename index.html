@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BNS Smart Ad Site</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+    header { display: flex; align-items: center; justify-content: space-between; background: #002244; color: white; padding: 10px 20px; flex-wrap: wrap; }
+    header img { height: 40px; }
+    header .centered-tagline { font-size: 1.25em; font-weight: bold; text-align: center; flex: 1; }
+    nav a { margin-left: 15px; color: white; text-decoration: none; font-size: 0.95em; }
+    section { padding: 20px; }
+    iframe { width: 100%; border: none; margin-top: 10px; }
+    .wizard-section, .offer-section { border: 1px solid #ccc; padding: 20px; margin-top: 20px; border-radius: 8px; }
+    label { display: block; margin-top: 10px; }
+    input, select, textarea, button { width: 100%; padding: 8px; margin-top: 4px; }
+    #preview { background: #f9f9f9; padding: 10px; border: 1px solid #ccc; margin-top: 20px; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="https://via.placeholder.com/100x40?text=BNS+Logo" alt="BNS Logo">
+    <div class="centered-tagline">One Pass. Endless Possibilities.</div>
+    <nav>
+      <a href="#create-ad">Create Ad</a>
+      <a href="#create-offer">Create Offer</a>
+      <a href="#get-pass">Get Pass</a>
+      <a href="#watch-ad">Watch Ad</a>
+      <a href="https://member-qa.bestnetworksystems.com" target="_blank">Get Offers</a>
+      <a href="https://analytics.bestnetworksystems.com/#/auth/login" target="_blank">View Analytics</a>
+      <a href="#shop">Shop</a>
+      <a href="https://qa.bestnetworksystems.com/#/signup" target="_blank">Signup</a>
+    </nav>
+  </header>
+
+  <section id="watch-ad">
+    <h2>📺 CTV That Converts — Unlock Companion Offers with Every Ad</h2>
+    <iframe src="https://adspro.bestnetworksystems.com/acme" height="315"></iframe>
+  </section>
+
+  <section id="get-pass">
+    <h2>🎟️ Get Your BNS Pass</h2>
+    <iframe src="https://getmypass.bestnetworksystems.com/?merchant=acme" height="600"></iframe>
+  </section>
+
+  <section id="create-ad" class="wizard-section">
+    <h2>🧠 Create Your Smart Ad</h2>
+    <label><input type="radio" name="admode" onclick="showWizard('website')"> 🌐 Website Only</label>
+    <label><input type="radio" name="admode" onclick="showWizard('freeform')"> ✍️ Freeform Text</label>
+    <label><input type="radio" name="admode" onclick="showWizard('guided')"> 🧭 Full Guided Wizard</label>
+
+    <div id="website" style="display:none">
+      <label>Website URL:<input id="websiteURL" type="text"></label>
+      <label>Ad Length:<select id="websiteLength"><option>8</option><option>15</option><option>30</option></select></label>
+      <label><input type="checkbox" id="websiteWallet"> Include eWallet Offer?</label>
+      <button onclick="generateAdScript('website')">Generate Ad</button>
+    </div>
+    <div id="freeform" style="display:none">
+      <label>Describe Your Ad:<textarea id="freeformText"></textarea></label>
+      <label>Ad Length:<select id="freeformLength"><option>8</option><option>15</option><option>30</option></select></label>
+      <label><input type="checkbox" id="freeformWallet"> Include eWallet Offer?</label>
+      <button onclick="generateAdScript('freeform')">Generate Ad</button>
+    </div>
+    <div id="guided" style="display:none">
+      <label>Business Name:<input id="biz" type="text"></label>
+      <label>Industry / Type:<input id="industry" type="text"></label>
+      <label>Product or Service Featured:<input id="product" type="text"></label>
+      <label>Special Offer or Value:<input id="offer" type="text"></label>
+      <label>Target Audience:<input id="audience" type="text"></label>
+      <label>Targeted Age Group:<input id="age" type="text"></label>
+      <label>Preferred Audience Nationality:<input id="nation" type="text"></label>
+      <label>Location:<input id="location" type="text"></label>
+      <label>Website URL:<input id="url" type="text"></label>
+      <label>Tone Preference:<input id="tone" type="text"></label>
+      <label>Ad Format:<input type="text" value="Visual with Narration"></label>
+      <label>Ad Length:<select id="length"><option>8</option><option>15</option><option>30</option><option>60</option></select></label>
+      <label><input type="checkbox" id="wallet"> Include eWallet Offer?</label>
+      <button onclick="generateAdScript('guided')">Generate Ad</button>
+    </div>
+    <div id="preview"></div>
+  </section>
+
+  <section id="create-offer" class="offer-section">
+    <h2>💰 Create Your Companion Offer</h2>
+    <label>OfferID:<input type="text"></label>
+    <label>Offer Type:<input type="text"></label>
+    <label>Country:<input type="text"></label>
+    <label>Category:<input type="text"></label>
+    <label>Offer Number:<input type="text"></label>
+    <label>Title:<input type="text"></label>
+    <label>Description:<textarea></textarea></label>
+    <label>From Date:<input type="date"></label>
+    <label>To Date:<input type="date"></label>
+    <label>Duration:<input type="text"></label>
+    <label>Terms:<input type="text"></label>
+    <label>Value:<input type="text"></label>
+    <label>Store:<input type="text"></label>
+    <label>Redeem Limit:<input type="text"></label>
+    <label>Product:<input type="text"></label>
+    <label>Product ID:<input type="text"></label>
+    <label>Brand:<input type="text"></label>
+    <label>Merchant:<input type="text"></label>
+    <label>AI Brand Image:<button onclick="generateAIImage()">Generate Image</button></label>
+    <img src="https://via.placeholder.com/300x200?text=AI+Generated+Image" alt="AI Preview">
+    <button>Save Offer</button>
+  </section>
+
+  <script>
+    function showWizard(id) {
+      ['website','freeform','guided'].forEach(mode => {
+        document.getElementById(mode).style.display = (mode === id) ? 'block' : 'none';
+      });
+    }
+
+    async function generateAdScript(mode) {
+      document.getElementById('spinner').style.display = 'block';
+      document.getElementById('preview').style.display = 'none';
+      let body = { mode };
+      try {
+        if (mode === 'website') {
+          body.website = document.getElementById('websiteURL').value;
+          body.length = document.getElementById('websiteLength').value;
+          body.wallet = document.getElementById('websiteWallet').checked;
+        } else if (mode === 'freeform') {
+          body.prompt = document.getElementById('freeformText').value;
+          body.length = document.getElementById('freeformLength').value;
+          body.wallet = document.getElementById('freeformWallet').checked;
+        } else {
+          body = {
+            biz: document.getElementById('biz').value,
+            industry: document.getElementById('industry').value,
+            product: document.getElementById('product').value,
+            offer: document.getElementById('offer').value,
+            audience: document.getElementById('audience').value,
+            age: document.getElementById('age').value,
+            nation: document.getElementById('nation').value,
+            location: document.getElementById('location').value,
+            url: document.getElementById('url').value,
+            tone: document.getElementById('tone').value,
+            length: document.getElementById('length').value,
+            wallet: document.getElementById('wallet').checked
+          };
+        }
+
+        const res = await fetch('https://bns-ai-wizard-backend.glitch.me/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+
+        if (!res.ok) throw new Error('Server error: ' + res.status);
+        const data = await res.json();
+        document.getElementById('spinner').style.display = 'none';
+        document.getElementById('preview').style.display = 'block';
+        document.getElementById('preview').innerText = data.script || '⚠️ No script returned.';
+      } catch (error) {
+        console.error(error);
+        document.getElementById('spinner').style.display = 'none';
+        document.getElementById('preview').style.display = 'block';
+        document.getElementById('preview').innerText = '❌ Error generating script: ' + error.message;
+      }
+    }
+
+    function generateAIImage() {
+      const img = document.querySelector('section#create-offer img');
+      img.src = 'https://source.unsplash.com/300x200/?brand,product,logo';
+      img.alt = 'Generated Brand Image';
+    }
+
+    const preview = document.getElementById('preview');
+    const spinner = document.createElement('div');
+    spinner.id = 'spinner';
+    spinner.style.display = 'none';
+    spinner.style.textAlign = 'center';
+    spinner.innerHTML = '⏳ <em>Loading...</em>';
+    preview.parentNode.insertBefore(spinner, preview);
+  </script>
+</body>
+</html>
